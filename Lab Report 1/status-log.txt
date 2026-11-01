@@ -1,0 +1,9 @@
+GET /
+Welcome to the Backend Development Fundamentals Lab 1 server! [200]
+GET /about
+{"name":"SHANMUKH NAGANJAN KADALI","section":"CSE-GEN_AI- 2A , 304 "} [200]
+GET /time
+{"currentTime":"Sat Oct 31 2026 14:18:37 GMT+0000 (Coordinated Universal Time)","iso":"2026-10-31T14:18:37.763Z"} [200]
+GET /nope
+404 Not Found: GET /nope does not exist [404]
+
