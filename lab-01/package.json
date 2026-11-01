@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "plain": "node plain-server.js",
-    "start:http": "node plain-server.js"
+    "start:http": "node server-http.js"
   },
   "keywords": [
     "nodejs",
