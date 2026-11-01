@@ -1,0 +1,21 @@
+{
+  "name": "lab-01",
+  "version": "1.0.0",
+  "description": "Lab 1: Node.js and Express server (Backend Development Fundamentals)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "plain": "node plain-server.js",
+    "start:http": "node plain-server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "backend"
+  ],
+  "author": "SHANMUKH NAGANJAN KADALI",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
