@@ -8,9 +8,11 @@
 
 ## Live Link
 
-**Deployment URL:** `<PASTE PUBLIC URL HERE>`
+- **Deployment URL:** https://backend-lab-reports-3.onrender.com
+- **Get All Books:** https://backend-lab-reports-3.onrender.com/books/
+- **Get Single Book:** https://backend-lab-reports-3.onrender.com/books/1/
 
-*(If the server could not be deployed, replace the line above with the reason, for example "Not deployed: &lt;reason&gt;". Every endpoint is shown working in the Screenshots section below.)*
+*(Hosted on Render's free tier. The first request after a period of inactivity can take up to a minute while the server wakes up.)*
 
 ## Objective
 
@@ -131,6 +133,10 @@ SELECT * FROM book;
 ### Database file changes after POST, PUT and DELETE
 
 ![sha256 of book.db changes after every write operation; GET leaves it unchanged](screenshots/15-database-file-changes.jpg)
+
+### Live deployment on Render
+
+![Live deployment output on Render](screenshots/16-live-deployment.png)
 
 ## Viva Questions
 
