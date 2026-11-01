@@ -10,7 +10,7 @@
 
 ## Live Link
 
-**Deployment URL:** Not deployed (Deployment pending — replace with your Render URL once hosted: `<YOUR RENDER URL>`)
+**Deployment URL:** https://backend-lab-reports-ntze.onrender.com
 
 *(Hosted on Render's free tier. The first request after a period of inactivity can take up to a minute while the server wakes up.)*
 
