@@ -1,8 +1,8 @@
 # Lab 2: SQLite database and CRUD routes
 
-- **Name:** `<YOUR FULL NAME>`
-- **Registration Number:** `<YOUR REG NO>`
-- **Section:** `<YOUR SECTION>`
+- **Name:** KADALI SHANMUKH NAGANJAN
+- **Registration Number:** 252U1R9050
+- **Section:** CSE GEN AI - 2A , 304
 - **Course:** Backend Development Fundamentals
 - **Lab Number:** 02
 
