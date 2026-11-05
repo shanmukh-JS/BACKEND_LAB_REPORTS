@@ -1,14 +1,14 @@
 # Lab 3: REST API, query parameters, validation, debugging
 
-**Name:** `SHANMUKH NAGANJAN KADALI` · **Registration number:** `252U1R9050` · **Section:** `CSE GEN AI -  2A , 304`
+**Name:** `KADALI SHANMUKH NAGANJAN` · **Registration number:** `252U1R9050` · **Section:** `CSE GEN AI - 2A , 304 `
 
 Backend Development Fundamentals · Year II Term II · Aurora · Faculty: Joel Prashanth D
 
 ## Live link
 
-**`<PASTE YOUR PUBLIC URL HERE>`** (example: `https://your-app.onrender.com/books`)
+**[https://backend-lab-reports-4.onrender.com/books](https://backend-lab-reports-4.onrender.com/books)**
 
-> If the project cannot be deployed, replace the line above with the reason (for example: "Free hosting was unavailable") and rely on the Postman screenshots and `postman/` collection below, which cover every endpoint.
+*Free instances may sleep; the first request can take about 50 seconds. Data resets on restart and is re-seeded automatically.*
 
 ## How to run
 
@@ -114,11 +114,23 @@ Every response is JSON in one consistent shape.
 
 ---
 
+### Live Deployment
+
+#### Live Service Health Check
+![Live deployment health check](screenshots/live-01-health.png)
+*Live deployment on Render: navigating to `/health` in the browser returns `200 OK` with `{"message":"OK","data":{"status":"up"}}`.*
+
+---
+
 ### Search, Sort, Filters and Pagination
 
 #### 5. GET /books (Default Values)
 ![GET /books with default values](screenshots/02-get-books-default.png)
 *Standard `GET /books` request without query parameters. Returns the default first page with `limit=10`, `offset=0`, sorted by `id ASC`, along with pagination metadata (`total`, `count`).*
+
+#### 5b. GET /books/1 (Fetch Book by ID)
+![GET /books/1](screenshots/02b-get-book-by-id.png)
+*`GET /books/1` retrieves a single book by its primary key ID, returning `200 OK` with full book details ("Clean Code").*
 
 #### 6. Title Search (`search_q`)
 ![Search with search_q](screenshots/03-search-q.png)
@@ -154,7 +166,11 @@ Every response is JSON in one consistent shape.
 
 #### 13. DELETE /books/:id (200 OK, then 404)
 ![DELETE returns 200, then 404](screenshots/11-delete-200-then-404.png)
-*`DELETE /books/25` removes the book with ID 25 and returns `200 OK` with the deleted row data. A subsequent request to fetch or delete ID 25 yields `404 Not Found`.*
+*`DELETE /books/25` removes the book with ID 25 and returns `200 OK` with the deleted row data.*
+
+#### 13b. DELETE /books/:id Already Deleted (404 Not Found)
+![DELETE returns 404 for missing id](screenshots/11b-delete-404.png)
+*Attempting to delete a book ID that has already been deleted (e.g. ID 28) returns `404 Not Found` with `{"message": "Book with id 28 not found"}`.*
 
 ---
 
