@@ -94,43 +94,119 @@ Every response is JSON in one consistent shape.
 
 ## Screenshots
 
-### Search, sort, filters and pagination
+### Server Startup, Database and Automated Tests
 
-![GET /books with default values](screenshots/02-get-books-default.png)
-![Search with search_q](screenshots/03-search-q.png)
-![Sorting by price descending](screenshots/04-sort-price-desc.png)
-![Pagination with limit and offset](screenshots/05-pagination.png)
-![Price range filter](screenshots/06-price-range.png)
-![Combined search, price filter and sort](screenshots/07-combined-filters.png)
+#### 1. Server Start
+![Server startup](screenshots/01-server-start.png)
+*Running `npm start` initiates `server.js`, loads `.env` configuration, establishes the SQLite database connection, checks port availability, and starts listening on `http://localhost:3000`.*
 
-### Create, update, delete (success cases)
-
-![POST returns 201](screenshots/08-post-201.png)
-![PUT returns 200](screenshots/10-put-200.png)
-![DELETE returns 200, then 404](screenshots/11-delete-200-then-404.png)
-
-### Failure cases
-
-![POST validation errors return 400](screenshots/09-post-400-validation.png)
-![404 for missing record, 400 for bad id](screenshots/12-404-and-400-id.png)
-![Invalid query parameters return 400](screenshots/13-query-errors-400.png)
-![Malformed JSON and unknown route](screenshots/14-malformed-json-and-unknown-route.png)
-![SQL injection text is treated as data](screenshots/15-sql-injection-safe.png)
-
-### Database, tests and Postman
-
+#### 2. SQLite Database View
 ![Database view](screenshots/16-database-view.png)
+*Inspecting the `books` table in the SQLite database (`data/books.db`) via the Node CLI, confirming that sample records are seeded with `id`, `title`, `author`, and `price`.*
+
+#### 3. Automated Test Suite (56 Passing)
 ![Automated tests (56 passing)](screenshots/17-automated-tests.png)
+*Executing `npm test` runs Node's built-in test runner across 7 test suites, verifying all 56 assertions (query parameters, validation, CRUD endpoints, edge cases) with 0 failures.*
+
+#### 4. Postman Collection Runner (91 Assertions Passed)
 ![Postman collection run (34 requests, 91 assertions)](screenshots/24-postman-collection-run.png)
+*Automated execution of the complete `Lab 3 - Books REST API` collection in Postman: all 34 requests (12 success cases and 22 failure cases) passed all 91 assertions with 0 errors.*
 
-### Debugging exercise
+---
 
+### Search, Sort, Filters and Pagination
+
+#### 5. GET /books (Default Values)
+![GET /books with default values](screenshots/02-get-books-default.png)
+*Standard `GET /books` request without query parameters. Returns the default first page with `limit=10`, `offset=0`, sorted by `id ASC`, along with pagination metadata (`total`, `count`).*
+
+#### 6. Title Search (`search_q`)
+![Search with search_q](screenshots/03-search-q.png)
+*`GET /books?search_q=sql` performs a case-insensitive, parameterized SQL `LIKE` search on the `title` column, returning only books matching "sql" ("Learning SQL" and "SQL Performance Explained").*
+
+#### 7. Sorting by Price Descending
+![Sorting by price descending](screenshots/04-sort-price-desc.png)
+*`GET /books?order_by=price&order=DESC&limit=5` sorts books by `price` in descending order against a whitelist-checked column name, returning the highest-priced books first.*
+
+#### 8. Pagination with Limit and Offset
+![Pagination with limit and offset](screenshots/05-pagination.png)
+*`GET /books?limit=3&offset=3` skips the first 3 records (`offset=3`) and retrieves the subsequent 3 books (`limit=3`), returning records with IDs 4, 5, and 6.*
+
+#### 9. Price Range Filter (`min_price` and `max_price`)
+![Price range filter](screenshots/06-price-range.png)
+*`GET /books?min_price=500&max_price=700` applies a parameterized SQL `BETWEEN ? AND ?` clause to retrieve books whose price falls strictly between 500 and 700.*
+
+#### 10. Combined Search, Filter and Sort
+![Combined search, price filter and sort](screenshots/07-combined-filters.png)
+*`GET /books?search_q=sql&max_price=650&order_by=price&order=ASC` demonstrates multiple query parameters composed together safely in SQL: searching "sql", capping price at 650, and sorting by price ascending.*
+
+---
+
+### Create, Update, Delete (Success Cases)
+
+#### 11. POST /books (201 Created)
+![POST returns 201](screenshots/08-post-201.png)
+*`POST /books` with a valid JSON payload (`title`, `author`, `price`) inserts the new book into SQLite and returns `201 Created` with the newly assigned `id` and a `Location: /books/:id` header.*
+
+#### 12. PUT /books/:id (200 OK)
+![PUT returns 200](screenshots/10-put-200.png)
+*`PUT /books/26` replaces all editable fields (`title`, `author`, `price`) of an existing book, verifying changes are persisted and returning `200 OK` with the updated book record.*
+
+#### 13. DELETE /books/:id (200 OK, then 404)
+![DELETE returns 200, then 404](screenshots/11-delete-200-then-404.png)
+*`DELETE /books/25` removes the book with ID 25 and returns `200 OK` with the deleted row data. A subsequent request to fetch or delete ID 25 yields `404 Not Found`.*
+
+---
+
+### Input Validation & Failure Cases
+
+#### 14. POST Validation Errors (400 Bad Request)
+![POST validation errors return 400](screenshots/09-post-400-validation.png)
+*Sending a `POST /books` request missing the required `title` field fails validation in `middleware/validate.js`, returning `400 Bad Request` with an informative error message: `{"message": "Validation failed: title is required"}`.*
+
+#### 15. Invalid ID (400 Bad Request) & Missing Record (404 Not Found)
+![404 for missing record, 400 for bad id](screenshots/12-404-and-400-id.png)
+*`GET /books/abc` fails ID format validation before hitting the database, returning `400 Bad Request` (`"id must be a positive integer"`). Meanwhile, `GET /books/99999` with a syntactically valid ID that does not exist returns `404 Not Found`.*
+
+#### 16. Invalid Query Parameters (400 Bad Request)
+![Invalid query parameters return 400](screenshots/13-query-errors-400.png)
+*`GET /books?order_by=password` checks the sort column against the whitelist (`id`, `title`, `author`, `price`) and immediately rejects unauthorized columns with `400 Bad Request`.*
+
+#### 17. Malformed JSON Body & Unknown Route (400 / 404)
+![Malformed JSON and unknown route](screenshots/14-malformed-json-and-unknown-route.png)
+*Sending malformed JSON syntax in the request body is caught by Express's JSON error-handling middleware, returning `400 Bad Request` (`"Invalid JSON in request body"`), while accessing unregistered routes like `GET /authors` returns a consistent JSON `404 Not Found`.*
+
+#### 18. SQL Injection Immunity
+![SQL injection text is treated as data](screenshots/15-sql-injection-safe.png)
+*Sending malicious SQL injection strings such as `search_q=' OR 1=1 --` safely evaluates as literal search text via parameterized queries (`?`), returning 0 results instead of executing unauthorized database commands.*
+
+---
+
+### Debugging Exercise
+
+#### 19. Bug 1: Wrong Import Path
 ![Wrong import path](screenshots/18-debug-1-wrong-import-path.png)
+*`node server.js` in `debugging/broken` crashes on startup with `Error: Cannot find module './route/books'` due to an incorrect singular directory name in `app.js`.*
+
+#### 20. Bug 1 Fixed: Correct Import Path
 ![Import path fixed](screenshots/19-debug-1-fixed.png)
+*Correcting line 4 in `debugging/broken/app.js` to `require("./routes/books")` resolves the module path resolution error.*
+
+#### 21. Bug 2: Port Conflict (EADDRINUSE)
 ![EADDRINUSE port conflict](screenshots/20-debug-2-eaddrinuse.png)
+*Attempting to launch a second instance of the server on the same port crashes with `Error: listen EADDRINUSE: address already in use :::3000`, illustrating why single-port ownership is required.*
+
+#### 22. Bug 3: SQL Table Name Typo
 ![no such table](screenshots/21-debug-3-no-such-table.png)
+*`GET /books` returns `500 Internal Server Error`, and the server log reveals `[Error: SQLITE_ERROR: no such table: book]` caused by writing `FROM book` instead of `FROM books` in the SQL query.*
+
+#### 23. Bug 4: Missing `await` in Database Query
 ![Missing await](screenshots/22-debug-4-missing-await.png)
+*`GET /books/1` returns `200 OK` with `"data": {}` because `db.get()` returns a Promise object. Without `await`, the unresolved Promise is serialized to empty JSON `{}`.*
+
+#### 24. All Bugs Fixed
 ![After all fixes](screenshots/23-debug-after-fix.png)
+*Adding `await` to `db.get(...)` on line 62 in `routes/books.js` resolves the asynchronous resolution bug, properly returning the complete book object.*
 
 ## Postman test list
 
