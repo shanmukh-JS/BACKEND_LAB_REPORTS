@@ -1,14 +1,19 @@
 # Lab 3: REST API, query parameters, validation, debugging
 
-**Name:** `KADALI SHANMUKH NAGANJAN` · **Registration number:** `252U1R9050` · **Section:** `CSE GEN AI - 2A , 304 `
+- **Name:** KADALI SHANMUKH NAGANJAN
+- **Registration Number:** 252U1R9050
+- **Section:** CSE GEN AI - 2A , 304
+- **Course:** Backend Development Fundamentals · Year II Term II · Aurora · Faculty: Joel Prashanth D
+- **Lab Number:** 03
 
-Backend Development Fundamentals · Year II Term II · Aurora · Faculty: Joel Prashanth D
+## Live Link
 
-## Live link
+- **Deployment URL:** https://backend-lab-reports-4.onrender.com
+- **Get All Books:** https://backend-lab-reports-4.onrender.com/books
+- **Get Single Book:** https://backend-lab-reports-4.onrender.com/books/1
+- **Health Check:** https://backend-lab-reports-4.onrender.com/health
 
-**[https://backend-lab-reports-4.onrender.com/books](https://backend-lab-reports-4.onrender.com/books)**
-
-*Free instances may sleep; the first request can take about 50 seconds. Data resets on restart and is re-seeded automatically.*
+*(Hosted on Render's free tier. The first request after a period of inactivity can take up to a minute while the server wakes up. Data resets on restart and is re-seeded automatically.)*
 
 ## How to run
 
